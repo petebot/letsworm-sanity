@@ -28,6 +28,21 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'roles',
+      title: 'Roles',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        list: [
+          {title: 'Writer', value: 'writer'},
+          {title: 'Illustrator', value: 'illustrator'},
+        ],
+        layout: 'tags',
+      },
+      description: 'Select one or more roles this contributor performs',
+      validation: (Rule) => Rule.unique().error('Roles must be unique'),
+    }),
+    defineField({
       name: 'bio',
       title: 'Bio',
       type: 'array',

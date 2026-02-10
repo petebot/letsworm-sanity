@@ -20,6 +20,12 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'tagline',
+      title: 'Tagline',
+      type: 'string',
+      description: 'Short descriptive text for the story hero (optional)',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -48,8 +54,9 @@ export default defineType({
     }),
     defineField({
       name: 'mainImage',
-      title: 'Main image',
+      title: 'Hero Image',
       type: 'image',
+      description: 'Main illustration for the story (displayed in the story hero)',
       options: {
         hotspot: true,
       },
@@ -80,6 +87,20 @@ export default defineType({
       hidden: ({document}) =>
         !document?.categories ||
         !document?.categories?.some((cat) => cat._ref === '840c65b2-d76a-4408-85f6-2fd8baeeb055'),
+    }),
+    defineField({
+      name: 'issue',
+      title: 'Issue',
+      type: 'reference',
+      to: {type: 'issue'},
+      description: 'The issue this story belongs to',
+    }),
+    defineField({
+      name: 'orderRank',
+      title: 'Order Rank',
+      type: 'number',
+      hidden: true,
+      description: 'Used for ordering stories within an issue',
     }),
     defineField({
       name: 'publishedAt',
