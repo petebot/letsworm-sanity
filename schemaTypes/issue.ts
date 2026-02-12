@@ -37,25 +37,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'image',
-      description: 'Large worm illustration for the issue hero',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility',
-          validation: (Rule) => Rule.required(),
-        },
-      ],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'stories',
       title: 'Stories',
       type: 'array',
@@ -81,7 +62,6 @@ export default defineType({
     select: {
       title: 'title',
       issueNumber: 'issueNumber',
-      media: 'heroImage',
       published: 'published',
     },
     prepare(selection) {

@@ -48,9 +48,16 @@ export default defineType({
     }),
     defineField({
       name: 'promptedBy',
-      title: 'Prompted By',
-      type: 'reference',
-      to: {type: 'author'},
+      title: 'Prompted By Role',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Art (Artist prompted, Author responded)', value: 'art'},
+          {title: 'Writing (Author prompted, Artist responded)', value: 'writing'},
+        ],
+        layout: 'radio',
+      },
+      description: 'Which discipline initiated this collaboration?',
     }),
     defineField({
       name: 'mainImage',
@@ -78,15 +85,6 @@ export default defineType({
       title: 'Categories',
       type: 'array',
       of: [{type: 'reference', to: {type: 'category'}}],
-    }),
-    defineField({
-      name: 'storyCycleName',
-      title: 'Suite',
-      of: [{type: 'reference', to: {type: 'storyCycle'}}],
-      type: 'array',
-      hidden: ({document}) =>
-        !document?.categories ||
-        !document?.categories?.some((cat) => cat._ref === '840c65b2-d76a-4408-85f6-2fd8baeeb055'),
     }),
     defineField({
       name: 'issue',
@@ -123,12 +121,19 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
+      authorName: 'author.name',
+      authorGivenName: 'author.givenName',
+      authorMiddleName: 'author.middleName',
+      authorFamilyName: 'author.familyName',
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {title, media, authorName, authorGivenName, authorMiddleName, authorFamilyName} =
+        selection
+      const author =
+        authorName ||
+        [authorGivenName, authorMiddleName, authorFamilyName].filter(Boolean).join(' ')
+      return {title, media, subtitle: author && `by ${author}`}
     },
   },
 })
