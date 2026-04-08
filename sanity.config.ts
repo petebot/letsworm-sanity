@@ -10,7 +10,24 @@ export default defineConfig({
   projectId: 'tukw59bq',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title('Content')
+          .items([
+            S.listItem()
+              .title('Submission Guidelines')
+              .child(
+                S.documentTypeList('submissionGuidelines').title('Submission Guidelines Documents')
+              ),
+            ...S.documentTypeListItems().filter(
+              (listItem) => listItem.getId() !== 'submissionGuidelines'
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,

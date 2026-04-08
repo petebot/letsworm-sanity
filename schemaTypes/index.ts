@@ -5,5 +5,15 @@ import author from './author'
 import issue from './issue'
 import {heroType} from './heroType'
 import {pageType} from './pageType'
+import {submissionGuidelinesType} from './submissionGuidelines'
 
-export const schemaTypes = [issue, pageType, heroType, post, category, author, blockContent]
+export const schemaTypes = [
+  issue,
+  pageType,
+  submissionGuidelinesType,
+  heroType,
+  post,
+  category,
+  author,
+  blockContent,
+]
