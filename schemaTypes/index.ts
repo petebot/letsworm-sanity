@@ -2,8 +2,18 @@ import blockContent from './blockContent'
 import category from './category'
 import post from './post'
 import author from './author'
-import set from './storyCycle'
+import issue from './issue'
 import {heroType} from './heroType'
 import {pageType} from './pageType'
+import {submissionGuidelinesType} from './submissionGuidelines'
 
-export const schemaTypes = [pageType, heroType, post, category, set, author, blockContent]
+export const schemaTypes = [
+  issue,
+  pageType,
+  submissionGuidelinesType,
+  heroType,
+  post,
+  category,
+  author,
+  blockContent,
+]

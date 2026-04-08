@@ -1,21 +1,55 @@
 import {defineField, defineType} from 'sanity'
 
+const buildFullName = (doc: {
+  givenName?: string
+  middleName?: string
+  familyName?: string
+  name?: string
+}) => {
+  if (doc?.name) return doc.name
+  return [doc?.givenName, doc?.middleName, doc?.familyName].filter(Boolean).join(' ').trim()
+}
+
 export default defineType({
   name: 'author',
-  title: 'Contributers',
+  title: 'Contributors',
   type: 'document',
   fields: [
+    defineField({
+      name: 'givenName',
+      title: 'Given Name',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Given name is required'),
+    }),
+    defineField({
+      name: 'middleName',
+      title: 'Middle Name',
+      type: 'string',
+      description: 'Optional middle name or initial',
+    }),
+    defineField({
+      name: 'familyName',
+      title: 'Family Name',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Family name is required'),
+    }),
     defineField({
       name: 'name',
       title: 'Name',
       type: 'string',
+      readOnly: true,
+      description: 'Auto-generated from given, middle, and family names',
+      hidden: true,
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'name',
+        source: (doc) =>
+          buildFullName(
+            doc as {givenName?: string; middleName?: string; familyName?: string; name?: string},
+          ),
         maxLength: 96,
       },
     }),
@@ -43,8 +77,17 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'name',
+      name: 'name',
+      givenName: 'givenName',
+      middleName: 'middleName',
+      familyName: 'familyName',
       media: 'image',
+    },
+    prepare(selection) {
+      const {name, givenName, middleName, familyName, media} = selection
+      const title =
+        buildFullName({name, givenName, middleName, familyName}) || 'Unnamed contributor'
+      return {title, media}
     },
   },
 })
